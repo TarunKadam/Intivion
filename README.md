@@ -52,14 +52,14 @@ The project is a Forex anomaly detection and compliance system designed to monit
             └──────────────────────────────┘
 
 ## What I have done
-###1. data_generator.py:
+1. data_generator.py:
 - The code generates a synthetic forex events dataset with diverse users, including user_id, country, device_preference, risk_profile, and kyc_status. 
 - It simulates a wide range of events (logins, logouts, trades, transactions, KYC, document uploads, orders, margin calls, stop-loss/profit triggers) with event-specific numeric and categorical features. 
 - Anomalies include geo-anomalies, device anomalies, high-risk withdrawals, trade anomalies, and sequences of consecutive anomalous events, all of which can be amplified for LSTM detection. 
 - Certain high-risk events are flagged as is_high_risk_fraud. The final output is a DataFrame with all features, timestamps, anomaly flags, and fraud indicators for model training.
 - I have also inclluded noise in the dataset to replicate real-world datasets
 
-###2. processor.py:
+2. processor.py:
 - Reads the forex events CSV and ensures critical columns exist.
 - It generates user-level features including rolling statistics (mean, std, z-score of amount), inter-event times, PnL volatility, IP/device anomaly proxies, clustered trades, and login velocity. 
 - The pipeline captures temporal patterns, unusual trading behavior, and potential anomalies, then outputs a cleaned, feature-rich dataset (featured_events.csv) for model training.
@@ -68,13 +68,13 @@ The project is a Forex anomaly detection and compliance system designed to monit
    -  It also supports lazy evaluation, optimizing the entire query before execution to reduce memory usage and computation time.
    -   Additionally, its Apache Arrow-based columnar storage and lack of index complexity make it more memory-efficient and less error-prone for large-scale data processing.
 
-###3. train_model.py:
+3. train_model.py:
 - Implements a baseline Isolation Forest and an advanced LSTM Autoencoder for anomaly detection on forex event sequences.
 - It preprocesses and encodes features, converts them into user-level sequences, and trains the LSTM to reconstruct normal behavior. 
 - Both models generate anomaly scores, which are compared using precision, recall, and F1 metrics, helping evaluate their effectiveness on temporal anomalies.
 - Scaled the LSTM Autoencoder anomaly score to a 0–1 range using a sigmoid function.
 
-###4. app.py:
+4. app.py:
 - This FastAPI app implements ForexGuard compliance monitoring by detecting anomalies across multiple domains: login patterns, financial transactions, trading behavior, behavioral metrics, temporal events, account risk, and graph/network-level anomalies (e.g., multiple accounts on same IP, synchronized trades).
 - It accepts trade activity via a TradeActivity JSON payload, computes anomaly scores using pre-trained models (Isolation Forest + LSTM), and performs rule-based checks for specific high-risk patterns. 
 - Detected anomalies are summarized using an LLM and optionally sent to Kafka for alerting. 
