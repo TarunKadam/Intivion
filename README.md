@@ -205,15 +205,11 @@ With proper encoding and scaling, LSTM Autoencoder can learn from heterogeneous 
 Can be extended to transformers or variational autoencoders (VAE) for more complex temporal or probabilistic anomaly modeling.
 
 ## Assumptions, Improvements and Limitations
-1. An attempt was made to deploy the project on Hugging Face Spaces for demonstration purposes. However, deployment was unsuccessful due to resource constraints and dependency limitations, particularly with heavy libraries such as PyTorch and SHAP, which require higher memory and longer build times. Additionally, the model size and runtime requirements exceeded the platform’s free-tier capabilities, leading to build failures and execution issues.
-
-As a result, the project was successfully demonstrated in a local environment, ensuring full functionality, real-time processing, and stable performance without resource limitations.
+1. An attempt was made to deploy the project on Hugging Face Spaces for demonstration purposes. However, deployment was unsuccessful due to resource constraints and dependency limitations, particularly with heavy libraries such as PyTorch and SHAP, which require higher memory and longer build times. Additionally, the model size and runtime requirements exceeded the platform’s free-tier capabilities, leading to build failures and execution issues. As a result, the project was successfully demonstrated in a local environment, ensuring full functionality, real-time processing, and stable performance without resource limitations.
 
 2. AWS, while powerful, is overkill for a quick demo due to complex setup, higher resource requirements, and potential unexpected costs.
 3. Render, though simpler, struggles with heavy ML dependencies like PyTorch and SHAP due to strict RAM limits and long build times. Both platforms introduce friction for fast deployment, making them less suitable for rapid prototyping.
-4. The system design includes integration with the Mistral-7B model via the Hugging Face API, as reflected in the app.py implementation. However, due to API access constraints (such as missing/limited API token usage and runtime restrictions), the LLM inference calls were not executed during deployment and testing.
-
-Despite this, the architecture is fully prepared for LLM-based summarization, and the integration can be activated seamlessly once valid API access and sufficient resources are available.
+4. The system design includes integration with the Mistral-7B model via the Hugging Face API, as reflected in the app.py implementation. However, due to API access constraints (such as missing/limited API token usage and runtime restrictions), the LLM inference calls were not executed during deployment and testing. Despite this, the architecture is fully prepared for LLM-based summarization, and the integration can be activated seamlessly once valid API access and sufficient resources are available.
 5. Creating a frontend dashboard
 6. Use MLflow or Weights & Biases to track model versions, performance metrics, and dataset dri
 7. The synthetic dataset generated is symbolic of real-world data, hence its very unbalanced with respect to the number of anomalies among total entries. This causes Isolation Model to have similar performance metrics compared to that of LSTM Autoencoder model.
