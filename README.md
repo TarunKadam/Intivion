@@ -196,22 +196,15 @@ With proper encoding and scaling, LSTM Autoencoder can learn from heterogeneous 
 5. Scalability:
 Can be extended to transformers or variational autoencoders (VAE) for more complex temporal or probabilistic anomaly modeling.
 
-## Improvements and Limitations
+## Assumptions, Improvements and Limitations
 1. Hosting on HuggingFace can be done. Despite files being correctly uploaded, there were multiple log issues, especially requirements.txt issues.
 2. We can successfully incorporating LLM Mistral-7B via HuggingFace API. It is although mentioned in app.py code.
 3. Creating a frontend dashboard
 4. Use MLflow or Weights & Biases to track model versions, performance metrics, and dataset dri
+5. The synthetic dataset generated is symbolic of real-world data, hence its very unbalanced with respect to the number of anomalies among total entries. This causes Isolation Model to have similar performance metrics compared to that of LSTM Autoencoder model.
 
 
-
-Uses Mistral-7B (via HuggingFace API):
-
-Converts raw anomaly → human-readable explanation
-Example:
-
-"User shows signs of coordinated trading activity from a shared IP, indicating potential collusion."
-
-📂 Project Structure
+## Project Structure
 ForexGuard/
 │
 ├── data/
@@ -236,44 +229,10 @@ ForexGuard/
 ├── requirements.txt
 └── README.md
 
-⚖️ Assumptions / Trade-offs / Limitations
-✅ Assumptions
-Input data is semi-clean and structured
-Users have consistent identifiers
-IP tracking is reliable
-⚖️ Trade-offs
-Decision	            Trade-off
-Hybrid ML + Rules	More complexity but higher accuracy
-LSTM Autoencoder	Better sequence modeling but slower
-Real-time scoring	Limited historical context
-SHAP explainability	Adds computation overhead
-❌ Limitations
-No real-time distributed streaming pipeline (Kafka optional)
-LSTM trained on limited features (only 4 inputs)
-Rule thresholds are manually tuned
-No user-level long-term profiling (session-based only)
-Depends on external API for LLM summaries
-Demo assumptions (e.g., fixed deposits, bonus simulation)
-🚀 Future Improvements
-🔄 Full Kafka + streaming pipeline
-📈 Online learning models
-🧠 Graph Neural Networks for fraud rings
-📊 Dashboard (React + charts)
-⚡ Redis for real-time state tracking
-🔐 Stronger KYC integration
-🧪 Testing
-
-
-🐳 Docker Support
-
-Build and run:
-
-docker-compose up --build
 
 
 
-The Forex Events Feature Engineering project processes raw Forex event data to generate features for anomaly detection, trading analytics, and user behavior profiling. It works with three main files: forex_events.csv (raw simulator data), featured_events.csv (output with injected and engineered features), and processor.py (a Polars-based feature engineering script). The pipeline uses path-agnostic loading to automatically locate input/output files, applies column guards to inject missing critical columns with defaults (pnl=0.0, user_ip="0.0.0.0", event_type="trade", amount=0.0), and converts timestamps while sorting by user_id and timestamp to enable accurate rolling statistics and inter-event calculations. Engineered features include rolling transaction stats (avg_volume_7d, std_volume_7d, volume_zscore), inter_event_time_delta for event spacing, pnl_volatility for PnL risk, ip_deviation_score as a proxy for device/IP anomalies, is_clustered_trade to flag events occurring within 10 seconds, and login_velocity_6h to track login frequency. All original columns such as user_id, event_type, amount, device info, trade details, KYC information, and session data are preserved. The pipeline is fast and memory-efficient with Polars, automatically handles missing data, and produces a dataset ready for anomaly detection, fraud analysis, and behavioral modeling.
 
 
 
-The train_models.py script trains both baseline and advanced anomaly detection models on engineered Forex event features. It reads featured_events.csv and selects key features (amount, margin_usage, login_velocity_6h, volume_zscore) for modeling. A baseline IsolationForest is trained for quick anomaly detection, and a SHAP explainer is generated on a subset of 2000 rows to provide feature-level interpretability. An advanced LSTM Autoencoder is trained to capture temporal anomalies, using standardized input and a small hidden dimension for compression and memory efficiency. All models, scalers, feature names, and SHAP explainers are saved to a models/ directory, making them ready for integration with downstream fraud detection and behavioral analysis pipelines. The workflow is fully compatible with the output of processor.py and leverages both rolling and temporal feature patterns for accurate anomaly identification.
+
