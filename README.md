@@ -217,6 +217,7 @@ Can be extended to transformers or variational autoencoders (VAE) for more compl
 
 
 ## Project Structure
+```text
 ForexGuard/
 │
 ├── data/
@@ -240,7 +241,7 @@ ForexGuard/
 ├── Dockerfile
 ├── requirements.txt
 └── README.md
-
+```
 
 
 
